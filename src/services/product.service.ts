@@ -116,9 +116,15 @@ export const ProductService = {
 export const ProductValidationService = {
   validateProductForCreation: (body: ProductForCreation): boolean => {
     try {
-      const { name, description, price } = body;
+      const { name, description, price, imageUrl } = body;
 
-      if (!name || !description || !price || isNaN(Number(price))) {
+      if (
+        !name ||
+        !price ||
+        isNaN(Number(price)) ||
+        description === undefined ||
+        imageUrl === undefined
+      ) {
         return false;
       }
 

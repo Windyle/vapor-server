@@ -1,6 +1,6 @@
 type BaseProduct = {
   name: string;
-  description: string;
+  description: string | null;
   price: number;
   imageUrl: string | null;
 };
