@@ -5,19 +5,22 @@
       "id": 1,
       "name": "Factorio",
       "description": "The best automation game ever. The factory must grow!",
-      "price": 32
+      "price": 32,
+      "imageUrl": "https://c4.wallpaperflare.com/wallpaper/725/635/612/factorio-wallpaper-preview.jpg"
     },
     {
       "id": 2,
       "name": "Monster Hunter World",
       "description": "Hunt monsters, get loot, craft gear, hunt more monsters.",
-      "price": 29.99
+      "price": 29.99,
+      "imageUrl": "https://c4.wallpaperflare.com/wallpaper/127/770/419/video-games-monster-hunter-monster-hunter-world-wallpaper-preview.jpg"
     },
     {
       "id": 3,
       "name": "Hollow Knight",
       "description": "Like Dark Souls, but with bugs.",
-      "price": 14.79
+      "price": 14.79,
+      "imageUrl": "https://c4.wallpaperflare.com/wallpaper/947/453/279/video-game-hollow-knight-hd-wallpaper-preview.jpg"
     }
   ]
 }

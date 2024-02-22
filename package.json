@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node --env-file=.env dist/server",
-    "start:watch": "nodemon --env-file=.env dist/server",
+    "start": "tsc && node dist/server",
+    "start:watch": "nodemon dist/server",
     "build": "tsc",
     "build:watch": "tsc -w"
   },
