@@ -5,36 +5,63 @@ import type {
   ProductForCreation,
 } from "../models/product";
 import { logger } from "./utils/logger.service";
+import { DefaultHttpResponse } from "../types/default-http-response";
 
 const DataPath = "./data/products.json";
 
 export const ProductService = {
-  getAllProducts: (): Product[] => {
+  getAllProducts: (): DefaultHttpResponse<Product[]> => {
     try {
       const data = JSON.parse(
         fs.readFileSync(DataPath, "utf-8")
       ) as ProductData;
-      return data.products || [];
+      
+      return {
+        statusCode: 200,
+        data: data.products,
+      };
     } catch (error) {
       logger.error(error);
-      return [];
+      
+      return {
+        statusCode: 500,
+        data: [],
+        message: "Internal server error",
+      };
     }
   },
 
-  getProductById: (id: number): Product | null => {
+  getProductById: (id: number): DefaultHttpResponse<Product | null> => {
     try {
       const data = JSON.parse(
         fs.readFileSync(DataPath, "utf-8")
       ) as ProductData;
       const product = data.products.find((p: Product) => p.id === id);
-      return product || null;
+      
+      if (!product) {
+        return {
+          statusCode: 404,
+          data: null,
+          message: "Product not found",
+        };
+      }
+
+      return {
+        statusCode: 200,
+        data: product,
+      };
     } catch (error) {
       logger.error(error);
-      return null;
+      
+      return {
+        statusCode: 500,
+        data: null,
+        message: "Internal server error",
+      };
     }
   },
 
-  createProduct: (body: ProductForCreation): Product | null => {
+  createProduct: (body: ProductForCreation): DefaultHttpResponse<Product | null> => {
     try {
       const { name, description, price, imageUrl } = body;
 
@@ -54,14 +81,22 @@ export const ProductService = {
 
       fs.writeFileSync(DataPath, JSON.stringify(data, null, 2));
 
-      return newProduct;
+      return {
+        statusCode: 201,
+        data: newProduct,
+      };
     } catch (error) {
       logger.error(error);
-      return null;
+      
+      return {
+        statusCode: 500,
+        data: null,
+        message: "Internal server error",
+      };
     }
   },
 
-  updateProduct: (id: number, body: ProductForCreation): Product | null => {
+  updateProduct: (id: number, body: ProductForCreation): DefaultHttpResponse<Product | null> => {
     try {
       const { name, description, price, imageUrl } = body;
 
@@ -83,14 +118,23 @@ export const ProductService = {
       };
 
       fs.writeFileSync(DataPath, JSON.stringify(data, null, 2));
-      return product;
+      
+      return {
+        statusCode: 200,
+        data: data.products[data.products.indexOf(product)],
+      };
     } catch (error) {
       logger.error(error);
-      return null;
+      
+      return {
+        statusCode: 500,
+        data: null,
+        message: "Internal server error",
+      };
     }
   },
 
-  deleteProduct: (id: number): Product | null => {
+  deleteProduct: (id: number): DefaultHttpResponse<Product | null> => {
     try {
       const data = JSON.parse(
         fs.readFileSync(DataPath, "utf-8")
@@ -98,17 +142,29 @@ export const ProductService = {
       const product = data.products.find((p: Product) => p.id === id);
 
       if (!product) {
-        return null;
+        return {
+          statusCode: 404,
+          data: null,
+          message: "Product not found",
+        };
       }
 
       data.products = data.products.filter((p: Product) => p.id !== id);
 
       fs.writeFileSync(DataPath, JSON.stringify(data, null, 2));
 
-      return product;
+      return {
+        statusCode: 200,
+        data: product,
+      };
     } catch (error) {
       logger.error(error);
-      return null;
+      
+      return {
+        statusCode: 500,
+        data: null,
+        message: "Internal server error",
+      };
     }
   },
 };

@@ -1,45 +1,35 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 const router = express.Router();
 
+import { bodyValidation } from "../middleware/body-validation.middleware";
+import { idParamValidation } from "../middleware/params-validation.middleware";
 import { ProductService } from "../services/product.service";
-import { ProductValidationService } from "../services/product.service";
-
-const bodyValidation = (req: Request, res: Response, next: NextFunction) => {
-  // Check for empty body or invalid body composition
-  if (
-    Object.keys(req.body).length === 0 ||
-    !ProductValidationService.validateProductForCreation(req.body)
-  ) {
-    res.status(400).send();
-    return;
-  }
-
-  next();
-};
-
-const idParamValidation = (req: Request, res: Response, next: NextFunction) => {
-  // Check for invalid id
-  if (isNaN(Number(req.params.id))) {
-    res.status(400).send();
-    return;
-  }
-
-  next();
-};
+import { DefaultHttpResponse } from "../types/default-http-response";
+import { Product } from "../models/product";
 
 // GET /product -> returns all products
 router.get("/", (req: Request, res: Response) => {
-  res.status(200).send(ProductService.getAllProducts());
+  const response: DefaultHttpResponse<Product[]> = ProductService.getAllProducts();
+
+  res.status(response.statusCode).send(response);
 });
 
 // GET /product/:id -> returns a product by id
 router.get("/:id", idParamValidation, (req: Request, res: Response) => {
-  res.status(200).send(ProductService.getProductById(parseInt(req.params.id)));
+  const response: DefaultHttpResponse<Product | null> = ProductService.getProductById(
+    parseInt(req.params.id)
+  );
+
+  res.status(response.statusCode).send(response);
 });
 
 // POST /product -> creates a new product
 router.post("/", bodyValidation, (req: Request, res: Response) => {
-  res.status(200).send(ProductService.createProduct(req.body));
+  const response: DefaultHttpResponse<Product | null> = ProductService.createProduct(
+    req.body
+  );
+
+  res.status(response.statusCode).send(response);
 });
 
 // PUT /product/:id -> updates a product by id
@@ -48,15 +38,24 @@ router.put(
   bodyValidation,
   idParamValidation,
   (req: Request, res: Response) => {
+    const response: DefaultHttpResponse<Product | null> = ProductService.updateProduct(
+      parseInt(req.params.id),
+      req.body
+    );
+
     res
-      .status(200)
-      .send(ProductService.updateProduct(parseInt(req.params.id), req.body));
+      .status(response.statusCode)
+      .send(response);
   }
 );
 
 // DELETE /product/:id -> deletes a product by id
 router.delete("/:id", idParamValidation, (req: Request, res: Response) => {
-  res.status(200).send(ProductService.deleteProduct(parseInt(req.params.id)));
+  const response: DefaultHttpResponse<Product | null> = ProductService.deleteProduct(
+    parseInt(req.params.id)
+  );
+
+  res.status(response.statusCode).send(response);
 });
 
 export const ProductRouter = router;
