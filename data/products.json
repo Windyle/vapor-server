@@ -21,6 +21,13 @@
       "description": "Like Dark Souls, but with bugs.",
       "price": 14.79,
       "imageUrl": "https://c4.wallpaperflare.com/wallpaper/947/453/279/video-game-hollow-knight-hd-wallpaper-preview.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Warframe",
+      "description": "Ninjas in space. Grind for gear, kill stuff, grind for more gear.",
+      "price": 0,
+      "imageUrl": "https://c4.wallpaperflare.com/wallpaper/426/978/369/video-game-warframe-excalibur-warframe-wallpaper-preview.jpg"
     }
   ]
 }
