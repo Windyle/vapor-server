@@ -15,14 +15,14 @@ export const ProductService = {
       const data = JSON.parse(
         fs.readFileSync(DataPath, "utf-8")
       ) as ProductData;
-      
+
       return {
         statusCode: 200,
         data: data.products,
       };
     } catch (error) {
       logger.error(error);
-      
+
       return {
         statusCode: 500,
         data: [],
@@ -37,7 +37,7 @@ export const ProductService = {
         fs.readFileSync(DataPath, "utf-8")
       ) as ProductData;
       const product = data.products.find((p: Product) => p.id === id);
-      
+
       if (!product) {
         return {
           statusCode: 404,
@@ -52,7 +52,7 @@ export const ProductService = {
       };
     } catch (error) {
       logger.error(error);
-      
+
       return {
         statusCode: 500,
         data: null,
@@ -61,7 +61,9 @@ export const ProductService = {
     }
   },
 
-  createProduct: (body: ProductForCreation): DefaultHttpResponse<Product | null> => {
+  createProduct: (
+    body: ProductForCreation
+  ): DefaultHttpResponse<Product | null> => {
     try {
       const { name, description, price, imageUrl } = body;
 
@@ -71,9 +73,9 @@ export const ProductService = {
       const newProduct: Product = {
         id: data.latestSequenceId + 1,
         name,
-        description,
+        description: description || null,
         price,
-        imageUrl,
+        imageUrl: imageUrl || null,
       };
 
       data.products = [...data.products, newProduct];
@@ -87,7 +89,7 @@ export const ProductService = {
       };
     } catch (error) {
       logger.error(error);
-      
+
       return {
         statusCode: 500,
         data: null,
@@ -96,7 +98,10 @@ export const ProductService = {
     }
   },
 
-  updateProduct: (id: number, body: ProductForCreation): DefaultHttpResponse<Product | null> => {
+  updateProduct: (
+    id: number,
+    body: ProductForCreation
+  ): DefaultHttpResponse<Product | null> => {
     try {
       const { name, description, price, imageUrl } = body;
 
@@ -112,20 +117,20 @@ export const ProductService = {
       data.products[data.products.indexOf(product)] = {
         ...product,
         name,
-        description,
+        description: description || null,
         price,
-        imageUrl,
+        imageUrl: imageUrl || null,
       };
 
       fs.writeFileSync(DataPath, JSON.stringify(data, null, 2));
-      
+
       return {
         statusCode: 200,
         data: data.products[data.products.indexOf(product)],
       };
     } catch (error) {
       logger.error(error);
-      
+
       return {
         statusCode: 500,
         data: null,
@@ -159,7 +164,7 @@ export const ProductService = {
       };
     } catch (error) {
       logger.error(error);
-      
+
       return {
         statusCode: 500,
         data: null,
@@ -174,12 +179,20 @@ export const ProductValidationService = {
     try {
       const { name, description, price, imageUrl } = body;
 
+      console.log(
+        name === undefined ||
+          name === null ||
+          price === undefined ||
+          price === null ||
+          isNaN(Number(price))
+      );
+
       if (
-        !name ||
-        !price ||
-        isNaN(Number(price)) ||
-        description === undefined ||
-        imageUrl === undefined
+        name === undefined ||
+        name === null ||
+        price === undefined ||
+        price === null ||
+        isNaN(Number(price))
       ) {
         return false;
       }

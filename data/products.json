@@ -28,6 +28,27 @@
       "description": "Ninjas in space. Grind for gear, kill stuff, grind for more gear.",
       "price": 0,
       "imageUrl": "https://c4.wallpaperflare.com/wallpaper/426/978/369/video-game-warframe-excalibur-warframe-wallpaper-preview.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Lethal Company",
+      "description": "A game about trying not to die and having fun while failing.",
+      "price": 9.75,
+      "imageUrl": "https://wallpapercave.com/wp/wp13313049.jpg"
+    },
+    {
+      "id": 6,
+      "name": "Overcooked 2",
+      "description": "Cook food, don't set the kitchen on fire, and try not to yell at your friends.",
+      "price": 22.99,
+      "imageUrl": "https://wallpapercave.com/wp/wp3589140.png"
+    },
+    {
+      "id": 7,
+      "name": "Baldur's Gate 3",
+      "description": "A D&D game that's not actually D&D, but still fun.",
+      "price": 59.99,
+      "imageUrl": "https://wallpapercave.com/wp/wp7527588.jpg"
     }
   ]
 }
